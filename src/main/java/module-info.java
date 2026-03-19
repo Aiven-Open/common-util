@@ -25,14 +25,10 @@ module io.aiven.commons {
 
 	requires com.google.api.client;
 	requires com.google.api.client.json.gson;
-	requires io.aiven.commons.system;
 	requires com.github.luben.zstd_jni;
 	requires org.apache.commons.io;
 	requires snappy.java;
 	requires org.apache.commons.text;
 	requires org.apache.commons.lang3;
-
-	requires org.apache.commons.lang3;
-	requires org.slf4j;
 
 }

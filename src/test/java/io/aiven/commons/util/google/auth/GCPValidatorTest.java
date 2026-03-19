@@ -21,7 +21,6 @@ import com.google.api.client.json.GenericJson;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import io.aiven.commons.system.SystemCheck;
-import io.aiven.commons.util.google.auth.GCPValidator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

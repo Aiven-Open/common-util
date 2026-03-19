@@ -17,6 +17,7 @@
         SPDX-License-Identifier: Apache-2
  */
 /**
- * Aiven enhancements and implementations for the Apache Commons collections and genral Java collections libraries.
+ * Aiven enhancements and implementations for the Apache Commons collections and
+ * genral Java collections libraries.
  */
 package io.aiven.commons.util.collections;
