@@ -20,7 +20,7 @@ package io.aiven.commons.util.google.auth;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.gson.GsonFactory;
-import io.aiven.commons.system.SystemCheck;
+import io.aiven.commons.util.system.SystemCheck;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

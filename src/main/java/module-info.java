@@ -18,8 +18,13 @@
 /**
  * Collections module def
  */
-module io.aiven.commons {
-	exports io.aiven.commons.util;
+module io.aiven.commons.util {
+	exports io.aiven.commons.util.collections;
+	exports io.aiven.commons.util.google.auth;
+	exports io.aiven.commons.util.io.compression;
+	exports io.aiven.commons.util.strings;
+	exports io.aiven.commons.util.system;
+	exports io.aiven.commons.util.timing;
 
 	requires org.apache.commons.collections4;
 
@@ -30,5 +35,6 @@ module io.aiven.commons {
 	requires snappy.java;
 	requires org.apache.commons.text;
 	requires org.apache.commons.lang3;
+	requires org.slf4j;
 
 }

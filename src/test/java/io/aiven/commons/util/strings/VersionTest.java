@@ -30,16 +30,15 @@ public class VersionTest {
 
 	@Test
 	void testGenerated() {
-		Version version = new Version("io.aiven.commons/testing.strings.properties");
-		assertThat(version.of("testing.io.aiven.commons-aiven-commons-version-example")).isEqualTo("1.0.3-SNAPSHOT");
-		assertThat(version.of(Version.RECOMMENDED_PROPERTY)).isNotNull();
+		Version version = new Version("version.info");
+		assertThat(version.of("project-version")).isNotEqualTo("unknown");
 	}
 
 	@Test
 	void testMissingFile() {
-		Version version = new Version("io.aiven.commons/missing.strings.properties");
-		assertThat(version.of("testing.io.aiven.commons-aiven-commons-version-example")).isEqualTo(
-				"Error while loading io.aiven.commons/missing.strings.properties: inStream parameter is null");
-		assertThat(version.of(Version.RECOMMENDED_PROPERTY)).isNotNull();
+		final String expected = "Error while loading io/aiven/commons/missing.strings.properties: inStream parameter is null";
+		Version version = new Version("io/aiven/commons/missing.strings.properties");
+		assertThat(version.of("testing.io.aiven.commons-aiven-commons-version-example")).isEqualTo(expected);
+		assertThat(version.of("project-version")).isEqualTo(expected);
 	}
 }

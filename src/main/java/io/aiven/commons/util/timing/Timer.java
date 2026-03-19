@@ -54,7 +54,7 @@ public class Timer extends StopWatch {
 	 * @return the maximum duration for the timer.
 	 */
 	public long millisecondsRemaining() {
-		return super.isStarted() ? duration - super.getTime() : duration;
+		return super.isStarted() ? duration - super.getDuration().toMillis() : duration;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class Timer extends StopWatch {
 	 * @return {@code true} if the timer has expired.
 	 */
 	public boolean isExpired() {
-		return hasAborted || super.getTime() >= duration;
+		return hasAborted || super.getDuration().toMillis() >= duration;
 	}
 
 	/**

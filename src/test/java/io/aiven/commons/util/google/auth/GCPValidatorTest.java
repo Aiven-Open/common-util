@@ -20,7 +20,7 @@ package io.aiven.commons.util.google.auth;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import io.aiven.commons.system.SystemCheck;
+import io.aiven.commons.util.system.SystemCheck;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

@@ -66,8 +66,6 @@ import java.util.Properties;
  */
 public final class Version {
 	private static final String PROPERTIES_FILENAME = "app.properties";
-	/** The recommended property name for the project.version */
-	public static final String RECOMMENDED_PROPERTY = "project-version";
 	private final Properties versions;
 	private final String errorMsg;
 
