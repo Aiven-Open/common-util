@@ -69,7 +69,8 @@ jobs:
               "snapshots": {
                 "enabled": "false"
               },
-            }, {
+            }, 
+            {
               "id": "central-snapshot",
               "username": "${{ secrets.SONATYPE_ID }}",
               "password": "${{ secrets.SONATYPE_PASSWORD }}",
