@@ -5,7 +5,7 @@ Aiven Commons
 
 Is a collection of java utilities used in Aiven development
 
-[Documentation](https://aiven-open.github.io/aiven-commons/) is available.
+[Documentation](https://aiven-open.github.io/common-util/) is available.
 
 Overview
 ========
