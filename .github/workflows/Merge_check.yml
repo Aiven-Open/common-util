@@ -68,7 +68,7 @@ jobs:
               },
               "snapshots": {
                 "enabled": "false"
-              },
+              }
             }, 
             {
               "id": "central-snapshot",
@@ -82,7 +82,7 @@ jobs:
                 "enabled": "true",
                 "updatePolicy": "always",
                 "checksumPolicy": "fail"
-              },
+              }
             }]
 
       - name: Set up JDK ${{ matrix.java }}
