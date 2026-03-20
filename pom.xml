@@ -609,7 +609,7 @@
       </build>
     </profile>
     <profile>
-      <id>release</id>
+      <id>publish-shapshot</id>
       <build>
         <plugins>
           <plugin>
@@ -626,5 +626,23 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>publish</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.9.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <ignorePublishedComponents>true</ignorePublishedComponents>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 </project>

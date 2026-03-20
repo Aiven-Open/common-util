@@ -77,7 +77,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn --batch-mode clean verify
+        run: mvn -e -B -V -ntp clean verify
 
       - name: "Upload build failure reports"
         uses: actions/upload-artifact@v4
@@ -91,8 +91,8 @@ jobs:
       # javadoc has issues with java 17
       - name: Generate javadoc
         if: ${{ matrix.java != 17 }}
-        run: mvn --batch-mode javadoc:javadoc
+        run: mvn -e -B -V -ntp javadoc:javadoc
 
       - name: Build site
         if: ${{ matrix.java != 17 }}
-        run: mvn --batch-mode site site:stage
+        run: mvn -e -B -V -ntp site site:stage

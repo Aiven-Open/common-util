@@ -22,17 +22,12 @@
 name: Publish
 on:
   workflow_dispatch:
-    inputs:
-      module-name:
-        description: 'The module to publish.  Must be one of: collections, google-utils, kafka-config, kafka-testkit, strings, system, timing, velocity'
-        required: false
-        default: '.'
 
 
 # Disallow concurrent runs for the same PR by cancelling in-progress runs
 # when new commits are pushed
 concurrency:
-  group: ${{ inputs.module-name }}-${{ github.workflow }}-${{ github.ref }}
+  group: publish-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -53,12 +48,11 @@ jobs:
 
 
       - name: Extract Maven project version
-        run: echo "version=$(mvn -f ${{ inputs.module-name }} -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
         id: project
         
-      - name: Build (Maven ${{ inputs.module-name }} ${{ steps.project.outputs.version }})
-        run: mvn -f ${{ inputs.module-name }} --batch-mode clean install
-        if: contains('. collections, google-utils, kafka-config, kafka-testkit, strings, system, timing, velocity',  inputs.module-name)
+      - name: Build  ${{ steps.project.outputs.version }})
+        run: mvn -e -B -V -ntp clean verify
         env:
           MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
@@ -78,9 +72,8 @@ jobs:
               "password": "${{ secrets.SONATYPE_PASSWORD }}"
             }]
 
-      - name: Build and deploy (Maven deploy)
-        run: mvn -f ${{ inputs.module-name }} -P sign --batch-mode -Dgpg.signer=bc deploy
-        if: contains('. collections, google-utils, kafka-config, kafka-testkit, strings, system, timing, velocity',  inputs.module-name) && contains(steps.project.outputs.version , '-SNAPSHOT')
+      - name: Sign and Publish (Maven deploy)
+        run: mvn -P sign --batch-mode -Dgpg.signer=bc deploy
         env:
           MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}

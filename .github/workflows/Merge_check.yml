@@ -53,21 +53,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Setup Maven settings.xml
-        uses: s4u/maven-settings-action@v4.0.0
-        with:
-          sonatypeSnapshots: true
-          servers: |
-            [{
-              "id": "central",
-              "username": "${{ secrets.SONATYPE_ID }}",
-              "password": "${{ secrets.SONATYPE_PASSWORD }}"
-            }, {
-              "id": "central-snapshot",
-              "username": "${{ secrets.SONATYPE_ID }}",
-              "password": "${{ secrets.SONATYPE_PASSWORD }}"
-            }]
-
       - name: Set up JDK ${{ matirix.java }}
         uses: actions/setup-java@v4
         with:
@@ -76,7 +61,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn --batch-mode clean verify
+        run: mvn -e -B -V -ntp clean verify
 
       - name: "Upload build failure reports"
         uses: actions/upload-artifact@v4
@@ -90,47 +75,18 @@ jobs:
       # javadoc has issues with java 17
       - name: Generate javadoc
         if: ${{ matrix.java != 17 }}
-        run: mvn --batch-mode javadoc:javadoc
+        run: mvn -e -B -V -ntp javadoc:javadoc
 
       - name: Build site
         if: ${{ matrix.java != 17 }}
-        run: mvn --batch-mode site site:stage
+        run: mvn -e -B -V -ntp site site:stage
 
-      - name: Deploy Jars
+      - name: Sign Jars
         if: ${{ matrix.java == 17 }}
-        run: mvn -P sign --batch-mode -Dgpg.signer=bc deploy
+        run: mvn -P sign -e -B -V -ntp -Dgpg.signer=bc deploy
         env:
           MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
-
-      - name: Build site
-  # modules that had changes in the PR and are SNAPSHOT versions will be deployed.
-  deploy:
-    needs: [build]
-
-    name: Deploy jars
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'adopt'
-          java-version: 17
-          cache: maven
-
-      - name: Get changed files in the ${{ matrix.module }} folder
-        id: changed-files-specific
-        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
-        with:
-          files: ${{ matrix.module }}/**
-
-      - name: Extract Maven project version for ${{ matrix.module }}  ${{ steps.changed-files-specific.outputs.any_changed }}
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: echo "version=$(mvn -f ${{ matrix.module }} -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
-        id: project
 
       - name: Setup Maven settings.xml
         uses: s4u/maven-settings-action@v4.0.0
@@ -141,15 +97,22 @@ jobs:
               "id": "central",
               "username": "${{ secrets.SONATYPE_ID }}",
               "password": "${{ secrets.SONATYPE_PASSWORD }}"
+              "url": "https://central.sonatype.com/repository/maven-snapshots"
             }, {
               "id": "central-snapshot",
               "username": "${{ secrets.SONATYPE_ID }}",
               "password": "${{ secrets.SONATYPE_PASSWORD }}"
+              "url": "https://central.sonatype.com/repository/maven-snapshots"
             }]
 
-      - name: Deploy (Maven ${{ inputs.module-name }} ${{ steps.project.outputs.version }})
-        if: steps.changed-files-specific.outputs.any_changed == 'true' && contains(steps.project.outputs.version , '-SNAPSHOT')
-        run: mvn -f ${{ matrix.module }} -P sign --batch-mode -Dgpg.signer=bc deploy
+      - name: Extract Maven project version
+        run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        id: project
+
+      - name: Publish ${{ steps.project.outputs.version }}
+        if: contains(steps.project.outputs.version , '-SNAPSHOT')
+        run: mvn -P sign -P publish-snapshot -e -B -V -ntp -Dgpg.signer=bc deploy
         env:
           MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+
