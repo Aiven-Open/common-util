@@ -87,8 +87,31 @@ jobs:
         if: ${{ matrix.java != 17 }}
         run: mvn -e -B -V -ntp site site:stage
 
+
+
+  publish:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Extract version info
+        run: |
+          echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
+          echo "java_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
+        id: project
+
+
+      - name: Set up JDK ${{ steps.project.outputs.java_version }}
+        if:  contains(steps.project.outputs.version , '-SNAPSHOT')
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: ${{ steps.project.outputs.java_version }}
+          cache: 'maven'
+
+
       - name: Setup Maven settings.xml
-        if:  matrix.java == 17 && contains(steps.project.outputs.version , '-SNAPSHOT')
+        if:  contains(steps.project.outputs.version , '-SNAPSHOT')
         uses: s4u/maven-settings-action@v4.0.0
         with:
           sonatypeSnapshots: true
@@ -100,9 +123,12 @@ jobs:
             }]
 
       - name: Publish ${{ steps.project.outputs.version }}
-        if:  matrix.java == 17 && contains(steps.project.outputs.version , '-SNAPSHOT')
+        if:  contains(steps.project.outputs.version , '-SNAPSHOT')
         run: mvn -P sign -P publish-snapshot -e -B -V -ntp -Dgpg.signer=bc deploy
         env:
           MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
 
+      - name: ${{ steps.project.outputs.version }}  Not Snapshot
+        if: not contains(steps.project.outputs.version , '-SNAPSHOT')
+        run: echo ${{ steps.project.outputs.version }} is not a snapshot -- not publishing"
