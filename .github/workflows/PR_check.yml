@@ -20,6 +20,7 @@
 # This checks the source in the state as if after the merge.
 name: Pull request checks
 on:
+  workflow_dispatch:
   pull_request:
     branches: [ main ]
 
