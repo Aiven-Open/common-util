@@ -18,7 +18,7 @@
 
 # Workflow to check pull requests and new commits to main branches
 # This checks the source in the state as if after the merge.
-name: Deployment checks
+name: Main push checks
 on:
   push:
     branches:
