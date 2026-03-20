@@ -96,9 +96,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- java.version is the version we will release the jars at -->
-    <java.version>17</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <jdk.version>17</jdk.version>
+    <maven.compiler.source>${jdk.version}</maven.compiler.source>
+    <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <com.google.guava.version>32.0.1-jre</com.google.guava.version>
     <com.google.re2j.version>1.7</com.google.re2j.version>
     <com.google.auto.value.version>1.10.2</com.google.auto.value.version>
