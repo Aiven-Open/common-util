@@ -59,30 +59,9 @@ jobs:
           sonatypeSnapshots: true
           servers: |
             [{
-              "id": "central",
-              "url": "https://central.sonatype.com/repository/maven",
-              "releases": {
-                "enabled": "true",
-                "updatePolicy": "always",
-                "checksumPolicy": "fail"
-              },
-              "snapshots": {
-                "enabled": "false"
-              }
-            }, 
-            {
               "id": "central-snapshot",
               "username": "${{ secrets.SONATYPE_ID }}",
               "password": "${{ secrets.SONATYPE_PASSWORD }}",
-              "url": "https://central.sonatype.com/repository/maven-snapshots",
-              "releases": {
-                "enabled": "false"
-              },
-              "snapshots": {
-                "enabled": "true",
-                "updatePolicy": "always",
-                "checksumPolicy": "fail"
-              }
             }]
 
       - name: Set up JDK ${{ matrix.java }}

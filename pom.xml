@@ -295,13 +295,14 @@
     <repository>
       <releases>
         <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
       </releases>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-      <id>maven-repo</id>
-      <url>https://repo1.maven.org/maven2/</url>
-      <layout>default</layout>
+      <id>central</id>
+      <url>https://central.sonatype.com/repository/maven</url>
     </repository>
 
     <repository>
@@ -315,21 +316,7 @@
       </snapshots>
       <id>central-snapshot</id>
       <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-      <layout>default</layout>
     </repository>
-
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>maven</id>
-      <url>https://mvnrepository.com</url>
-      <layout>default</layout>
-    </repository>
-
   </repositories>
 
   <build>
