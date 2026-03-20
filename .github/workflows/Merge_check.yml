@@ -53,6 +53,37 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Setup Maven settings.xml
+        uses: s4u/maven-settings-action@v4.0.0
+        with:
+          sonatypeSnapshots: true
+          servers: |
+            [{
+              "id": "central",
+              "url": "https://central.sonatype.com/repository/maven",
+              "releases": {
+                "enabled": "true",
+                "updatePolicy": "always:,
+                "checksumPolicy": "fail"
+              },
+              "snapshots": {
+                "enabled": "false"
+              },
+            }, {
+              "id": "central-snapshot",
+              "username": "${{ secrets.SONATYPE_ID }}",
+              "password": "${{ secrets.SONATYPE_PASSWORD }}",
+              "url": "https://central.sonatype.com/repository/maven-snapshots",
+              "releases": {
+                "enabled": "false",
+              },
+              "snapshots": {
+                "enabled": "true",
+                "updatePolicy": "always:,
+                "checksumPolicy": "fail"
+              },
+            }]
+
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v4
         with:
@@ -60,10 +91,13 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
-      - name: Extract java version
-        run: echo "java_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+      - name: Extract version info
+        run: | 
+          echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
+          echo "java_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
+        id: project
 
-      - name: Build with Maven
+      - name: Build ${{ steps.project.outputs.version }} with Maven
         run: mvn -e -B -V -ntp clean verify
 
       - name: "Upload build failure reports"
@@ -83,34 +117,6 @@ jobs:
       - name: Build site
         if: ${{ matrix.java != 17 }}
         run: mvn -e -B -V -ntp site site:stage
-
-      - name: Sign Jars
-        if: ${{ matrix.java == 17 }}
-        run: mvn -P sign -e -B -V -ntp -Dgpg.signer=bc deploy
-        env:
-          MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
-
-      - name: Setup Maven settings.xml
-        uses: s4u/maven-settings-action@v4.0.0
-        with:
-          sonatypeSnapshots: true
-          servers: |
-            [{
-              "id": "central",
-              "username": "${{ secrets.SONATYPE_ID }}",
-              "password": "${{ secrets.SONATYPE_PASSWORD }}"
-              "url": "https://central.sonatype.com/repository/maven-snapshots"
-            }, {
-              "id": "central-snapshot",
-              "username": "${{ secrets.SONATYPE_ID }}",
-              "password": "${{ secrets.SONATYPE_PASSWORD }}"
-              "url": "https://central.sonatype.com/repository/maven-snapshots"
-            }]
-
-      - name: Extract Maven project version
-        run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
-        id: project
 
       - name: Publish ${{ steps.project.outputs.version }}
         if:  matrix.java == 17 && contains(steps.project.outputs.version , '-SNAPSHOT')
