@@ -2,6 +2,7 @@ Aiven Commons
 ======================
 
 [![Main push checks](https://github.com/Aiven-Open/common-util/actions/workflows/Merge_check.yml/badge.svg)](https://github.com/Aiven-Open/common-util/actions/workflows/Merge_check.yml)
+
 Is a collection of java utilities used in Aiven development
 
 [Documentation](https://aiven-open.github.io/aiven-commons/) is available.
