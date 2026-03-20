@@ -119,7 +119,7 @@ jobs:
             [{
               "id": "central-snapshot",
               "username": "${{ secrets.SONATYPE_ID }}",
-              "password": "${{ secrets.SONATYPE_PASSWORD }}",
+              "password": "${{ secrets.SONATYPE_PASSWORD }}"
             }]
 
       - name: Publish ${{ steps.project.outputs.version }}
@@ -130,5 +130,5 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
 
       - name: ${{ steps.project.outputs.version }}  Not Snapshot
-        if: not contains(steps.project.outputs.version , '-SNAPSHOT')
+        if: ${{ !contains(steps.project.outputs.version , '-SNAPSHOT') }}
         run: echo ${{ steps.project.outputs.version }} is not a snapshot -- not publishing"
