@@ -39,18 +39,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 17
+      - name: Extract java version
+        run: echo "java_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+
+      - name: Set up JDK ${{ steps.project.outputs.java_version }}
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
-          java-version: 17
+          java-version: ${{ steps.project.outputs.java_version }}
           cache: maven
 
 
       - name: Extract Maven project version
         run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
-        id: project
-        
+
       - name: Build  ${{ steps.project.outputs.version }})
         run: mvn -e -B -V -ntp clean verify
         env:
@@ -87,14 +89,3 @@ jobs:
             **/target/*-reports/**
           retention-days: 1
 
-  # Deployment job
-  deploy-site:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

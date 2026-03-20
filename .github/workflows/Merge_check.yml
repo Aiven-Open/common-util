@@ -60,6 +60,9 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
+      - name: Extract java version
+        run: echo "java_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+
       - name: Build with Maven
         run: mvn -e -B -V -ntp clean verify
 
@@ -110,7 +113,7 @@ jobs:
         id: project
 
       - name: Publish ${{ steps.project.outputs.version }}
-        if: contains(steps.project.outputs.version , '-SNAPSHOT')
+        if:  matrix.java == 17 && contains(steps.project.outputs.version , '-SNAPSHOT')
         run: mvn -P sign -P publish-snapshot -e -B -V -ntp -Dgpg.signer=bc deploy
         env:
           MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}

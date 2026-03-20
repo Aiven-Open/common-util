@@ -79,6 +79,15 @@ jobs:
       - name: Build with Maven
         run: mvn -e -B -V -ntp clean verify
 
+      # javadoc has issues with java 17
+      - name: Generate javadoc
+        if: ${{ matrix.java != 17 }}
+        run: mvn -e -B -V -ntp javadoc:javadoc
+
+      - name: Build site
+        if: ${{ matrix.java != 17 }}
+        run: mvn -e -B -V -ntp site site:stage
+
       - name: "Upload build failure reports"
         uses: actions/upload-artifact@v4
         if: failure()
@@ -88,11 +97,4 @@ jobs:
             **/target/*-reports/**
           retention-days: 1
 
-      # javadoc has issues with java 17
-      - name: Generate javadoc
-        if: ${{ matrix.java != 17 }}
-        run: mvn -e -B -V -ntp javadoc:javadoc
 
-      - name: Build site
-        if: ${{ matrix.java != 17 }}
-        run: mvn -e -B -V -ntp site site:stage
