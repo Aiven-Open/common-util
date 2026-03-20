@@ -33,27 +33,66 @@ jobs:
 
   # builds aiven-commons and all modules. Does not deploy.
   build:
+
+    strategy:
+      matrix:
+        java: [ 17, 20, 21, 25 ]
+      fail-fast: false
+
     name: Build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
-      - name: Set up JDK 17
+      - name: Configure artifact caching
+        uses: actions/cache@v5
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Setup Maven settings.xml
+        uses: s4u/maven-settings-action@v4.0.0
+        with:
+          sonatypeSnapshots: true
+          servers: |
+            [{
+              "id": "central",
+              "username": "${{ secrets.SONATYPE_ID }}",
+              "password": "${{ secrets.SONATYPE_PASSWORD }}"
+            }, {
+              "id": "central-snapshot",
+              "username": "${{ secrets.SONATYPE_ID }}",
+              "password": "${{ secrets.SONATYPE_PASSWORD }}"
+            }]
+
+      - name: Set up JDK ${{ matirix.java }}
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
-          java-version: 17
-          cache: maven
+          java-version: ${{ matirix.java }}
+          cache: 'maven'
 
-      - name: Build (Maven)
-        run: mvn -P ci --batch-mode clean install
+      - name: Build with Maven
+        run: mvn --batch-mode clean verify
 
       - name: "Upload build failure reports"
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: unit-test-results
+          name: unit-test-results-${{ matrix.java }}-JDK
           path: |
             **/target/*-reports/**
           retention-days: 1
+
+      # javadoc has issues with java 17
+      - name: Generate javadoc
+        if: ${{ matrix.java != 17 }}
+        run: mvn --batch-mode javadoc:javadoc
+
+      - name: Build site
+        if: ${{ matrix.java != 17 }}
+        run: mvn --batch-mode site site:stage

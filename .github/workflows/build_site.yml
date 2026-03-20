@@ -43,10 +43,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build site
-        run: mvn -P ci --batch-mode site site:stage
+        run: mvn --batch-mode site site:stage
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
