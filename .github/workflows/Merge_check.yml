@@ -63,7 +63,7 @@ jobs:
               "url": "https://central.sonatype.com/repository/maven",
               "releases": {
                 "enabled": "true",
-                "updatePolicy": "always:,
+                "updatePolicy": "always",
                 "checksumPolicy": "fail"
               },
               "snapshots": {
@@ -79,7 +79,7 @@ jobs:
               },
               "snapshots": {
                 "enabled": "true",
-                "updatePolicy": "always:,
+                "updatePolicy": "always",
                 "checksumPolicy": "fail"
               },
             }]
