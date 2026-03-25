@@ -181,7 +181,8 @@ class RingBufferTest {
 		final FakeKey key1 = new FakeKey("one", 1);
 		final FakeKey key2 = new FakeKey("one", 2);
 
-		RingBuffer<FakeKey> buffer = new RingBuffer<>(2, RingBuffer.DuplicateHandling.REJECT, (l, r) -> l.string().compareTo(r.string()));
+		RingBuffer<FakeKey> buffer = new RingBuffer<>(2, RingBuffer.DuplicateHandling.REJECT,
+				(l, r) -> l.string().compareTo(r.string()));
 		buffer.add(key1);
 		assertThat(buffer.contains(key1)).isTrue();
 		assertThat(buffer.contains(key2)).isTrue();

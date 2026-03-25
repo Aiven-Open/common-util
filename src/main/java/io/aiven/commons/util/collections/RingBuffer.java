@@ -26,11 +26,13 @@ import org.apache.commons.collections4.queue.SynchronizedQueue;
  * Implements a ring buffer of items. Items are inserted until maximum size is
  * reached the earliest items are removed when newer items are added.
  *
- * The ring buffer uses a comparator for determining if an entry is in the buffer.
- * If no comparator is provided, a default comparator using Object.equals() is used.
+ * The ring buffer uses a comparator for determining if an entry is in the
+ * buffer. If no comparator is provided, a default comparator using
+ * Object.equals() is used.
  *
  * @param <K>
- *            the type of item in the queue. Must support equality check or a comparator must be provided.
+ *            the type of item in the queue. Must support equality check or a
+ *            comparator must be provided.
  */
 public final class RingBuffer<K> {
 	/** How to handle the duplicates in the buffer. */
@@ -58,8 +60,8 @@ public final class RingBuffer<K> {
 
 	/**
 	 * Create a Ring Buffer of a maximum size that rejects duplicates. If the size
-	 * is less than or equal to 0 then the buffer is always empty. Duplicate is detection is
-	 * implemented using Object.equals().
+	 * is less than or equal to 0 then the buffer is always empty. Duplicate is
+	 * detection is implemented using Object.equals().
 	 *
 	 * @param size
 	 *            The maximum size of the ring buffer
@@ -93,7 +95,8 @@ public final class RingBuffer<K> {
 	 *            The maximum size of the ring buffer
 	 * @param duplicateHandling
 	 *            defines how to handle duplicate values in the buffer.
-	 * @param comparator the comparator to use for duplicate detection.
+	 * @param comparator
+	 *            the comparator to use for duplicate detection.
 	 */
 	public RingBuffer(final int size, final DuplicateHandling duplicateHandling, final Comparator<K> comparator) {
 		wrappedQueue = new CircularFifoQueue<>(size > 0 ? size : 1);
@@ -142,23 +145,24 @@ public final class RingBuffer<K> {
 	}
 
 	/**
-	 * Determines if the item is in the buffer.
-	 * This implementation iterates over the elements in the collection,
-	 * checking each element in turn for equality with the specified item using the comparator.
+	 * Determines if the item is in the buffer. This implementation iterates over
+	 * the elements in the collection, checking each element in turn for equality
+	 * with the specified item using the comparator.
 	 *
 	 * @param item
 	 *            the item to look for.
 	 * @return {@code true} if the item is in the buffer, {@code false} otherwise.
-	 * @throws NullPointerException if the item is null.
+	 * @throws NullPointerException
+	 *             if the item is null.
 	 */
 	public boolean contains(final K item) {
 		Objects.requireNonNull(item, "Item may not be null");
 		// make copy to avoid synchronization issues
 		for (Object o : queue.toArray(Object[]::new)) {
-            if (comparator.compare(item, (K) o) == 0) {
-                return true;
-            }
-        }
+			if (comparator.compare(item, (K) o) == 0) {
+				return true;
+			}
+		}
 		return false;
 	}
 
