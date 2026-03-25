@@ -309,7 +309,7 @@
             </goals>
             <phase>generate-test-resources</phase>
             <configuration>
-              <outputFile>${project.build.testOutputDirectory}/io/aiven/commons/testing.${artifactId}.properties</outputFile>
+              <outputFile>${project.build.testOutputDirectory}/io/aiven/commons/testing.${project.artifactId}.properties</outputFile>
             </configuration>
           </execution>
         </executions>
