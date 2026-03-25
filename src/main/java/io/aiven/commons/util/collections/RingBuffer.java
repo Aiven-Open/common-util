@@ -17,16 +17,20 @@ package io.aiven.commons.util.collections;
 
         SPDX-License-Identifier: Apache-2
  */
+import java.util.Comparator;
 import java.util.Objects;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.commons.collections4.queue.SynchronizedQueue;
 
 /**
  * Implements a ring buffer of items. Items are inserted until maximum size is
- * reached and then the earliest items are removed when newer items are added.
+ * reached the earliest items are removed when newer items are added.
+ *
+ * The ring buffer uses a comparator for determining if an entry is in the buffer.
+ * If no comparator is provided, a default comparator using Object.equals() is used.
  *
  * @param <K>
- *            the type of item in the queue. Must support equality check.
+ *            the type of item in the queue. Must support equality check or a comparator must be provided.
  */
 public final class RingBuffer<K> {
 	/** How to handle the duplicates in the buffer. */
@@ -50,9 +54,12 @@ public final class RingBuffer<K> {
 	/** Flag to allow duplicates in the buffer. */
 	private final DuplicateHandling duplicateHandling;
 
+	private final Comparator<K> comparator;
+
 	/**
 	 * Create a Ring Buffer of a maximum size that rejects duplicates. If the size
-	 * is less than or equal to 0 then the buffer is always empty.
+	 * is less than or equal to 0 then the buffer is always empty. Duplicate is detection is
+	 * implemented using Object.equals().
 	 *
 	 * @param size
 	 *            The maximum size of the ring buffer
@@ -65,7 +72,7 @@ public final class RingBuffer<K> {
 	/**
 	 * Create a Ring Buffer of specified maximum size and potentially allowing
 	 * duplicates. If the size is less than or equal to 0 then the buffer is always
-	 * empty.
+	 * empty. Duplicate is detection is implemented using Object.equals().
 	 *
 	 * @param size
 	 *            The maximum size of the ring buffer
@@ -73,10 +80,27 @@ public final class RingBuffer<K> {
 	 *            defines how to handle duplicate values in the buffer.
 	 */
 	public RingBuffer(final int size, final DuplicateHandling duplicateHandling) {
+		// comparator need only distinguish between equality and not equality.
+		this(size, duplicateHandling, (l, r) -> l.equals(r) ? 0 : 1);
+	}
+
+	/**
+	 * Create a Ring Buffer of specified maximum size and potentially allowing
+	 * duplicates. If the size is less than or equal to 0 then the buffer is always
+	 * empty.
+	 *
+	 * @param size
+	 *            The maximum size of the ring buffer
+	 * @param duplicateHandling
+	 *            defines how to handle duplicate values in the buffer.
+	 * @param comparator the comparator to use for duplicate detection.
+	 */
+	public RingBuffer(final int size, final DuplicateHandling duplicateHandling, final Comparator<K> comparator) {
 		wrappedQueue = new CircularFifoQueue<>(size > 0 ? size : 1);
 		queue = SynchronizedQueue.synchronizedQueue(wrappedQueue);
 		alwaysEmpty = size <= 0;
 		this.duplicateHandling = duplicateHandling;
+		this.comparator = comparator;
 	}
 
 	@Override
@@ -119,13 +143,23 @@ public final class RingBuffer<K> {
 
 	/**
 	 * Determines if the item is in the buffer.
+	 * This implementation iterates over the elements in the collection,
+	 * checking each element in turn for equality with the specified item using the comparator.
 	 *
 	 * @param item
 	 *            the item to look for.
-	 * @return {@code true} if the item is in the buffer, {@code false} othersie.
+	 * @return {@code true} if the item is in the buffer, {@code false} otherwise.
+	 * @throws NullPointerException if the item is null.
 	 */
 	public boolean contains(final K item) {
-		return queue.contains(item);
+		Objects.requireNonNull(item, "Item may not be null");
+		// make copy to avoid synchronization issues
+		for (Object o : queue.toArray(Object[]::new)) {
+            if (comparator.compare(item, (K) o) == 0) {
+                return true;
+            }
+        }
+		return false;
 	}
 
 	/**
@@ -152,7 +186,7 @@ public final class RingBuffer<K> {
 			case ALLOW :
 				return true;
 			case REJECT :
-				return !queue.contains(item);
+				return !contains(item);
 			case DELETE :
 				queue.remove(item);
 				return true;

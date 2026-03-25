@@ -159,4 +159,98 @@ class RingBufferTest {
 		assertThat(buffer.contains(middle)).isFalse();
 		assertThat(buffer.tail()).isEqualTo(tail);
 	}
+
+	@Test
+	void testDefaultComparatorSameValues() {
+		final FakeKey key1 = new FakeKey("one", 1);
+		final FakeKey key2 = new FakeKey("one", 1);
+
+		// default buffer does not see them as duplicate
+		RingBuffer<FakeKey> buffer = new RingBuffer<>(2);
+		buffer.add(key1);
+		assertThat(buffer.contains(key1)).isTrue();
+		assertThat(buffer.contains(key2)).isFalse();
+		buffer.add(key2);
+		assertThat(buffer.contains(key1)).isTrue();
+		assertThat(buffer.contains(key2)).isTrue();
+		assertThat(buffer.isFull()).isTrue();
+	}
+
+	@Test
+	void testComparator() {
+		final FakeKey key1 = new FakeKey("one", 1);
+		final FakeKey key2 = new FakeKey("one", 2);
+
+		RingBuffer<FakeKey> buffer = new RingBuffer<>(2, RingBuffer.DuplicateHandling.REJECT, (l, r) -> l.string().compareTo(r.string()));
+		buffer.add(key1);
+		assertThat(buffer.contains(key1)).isTrue();
+		assertThat(buffer.contains(key2)).isTrue();
+		buffer.add(key2);
+		assertThat(buffer.contains(key1)).isTrue();
+		assertThat(buffer.contains(key2)).isTrue();
+		assertThat(buffer.isFull()).isFalse();
+	}
+
+	@Test
+	void testEqComparator() {
+		final FakeKeyEq key1 = new FakeKeyEq("one", 1);
+		final FakeKeyEq key2 = new FakeKeyEq("two", 1);
+		RingBuffer<FakeKeyEq> buffer = new RingBuffer<>(2);
+		buffer.add(key1);
+		assertThat(buffer.contains(key1)).isTrue();
+		assertThat(buffer.contains(key2)).isTrue();
+		buffer.add(key2);
+		assertThat(buffer.contains(key1)).isTrue();
+		assertThat(buffer.contains(key2)).isTrue();
+		assertThat(buffer.isFull()).isFalse();
+	}
+
+	private class FakeKey {
+		private final String string;
+		private final int count;
+
+		FakeKey(String string, int count) {
+			this.string = string;
+			this.count = count;
+		}
+
+		String string() {
+			return string;
+		}
+
+		int count() {
+			return count;
+		}
+	}
+
+	private class FakeKeyEq {
+		private final String string;
+		private final int count;
+
+		FakeKeyEq(String string, int count) {
+			this.string = string;
+			this.count = count;
+		}
+
+		String string() {
+			return string;
+		}
+
+		int count() {
+			return count;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof FakeKeyEq other) {
+				return count == other.count;
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return count;
+		}
+	}
 }
