@@ -293,6 +293,18 @@
 
   <repositories>
     <repository>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>Maven</id>
+      <url>https://repo1.maven.org/maven2/</url>
+    </repository>
+
+    <repository>
       <id>central</id>
       <url>https://central.sonatype.com/repository/maven</url>
       <releases>
