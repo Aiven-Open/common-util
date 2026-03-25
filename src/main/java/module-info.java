@@ -27,7 +27,6 @@ module io.aiven.commons.util {
 	exports io.aiven.commons.util.timing;
 
 	requires org.apache.commons.collections4;
-
 	requires com.google.api.client;
 	requires com.google.api.client.json.gson;
 	requires com.github.luben.zstd_jni;
