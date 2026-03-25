@@ -72,7 +72,7 @@ public final class RingBuffer<K> {
 	/**
 	 * Create a Ring Buffer of specified maximum size and potentially allowing
 	 * duplicates. If the size is less than or equal to 0 then the buffer is always
-	 * empty. Duplicate is detection is implemented using Object.equals().
+	 * empty. Duplicate id detection is implemented using Object.equals().
 	 *
 	 * @param size
 	 *            The maximum size of the ring buffer
