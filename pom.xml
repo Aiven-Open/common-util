@@ -91,48 +91,47 @@
     </site>
   </distributionManagement>
 
-  <properties>
-    <project-version>${project.version}</project-version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- java.version is the version we will release the jars at -->
-    <jdk.version>17</jdk.version>
-    <maven.compiler.source>${jdk.version}</maven.compiler.source>
-    <maven.compiler.target>${jdk.version}</maven.compiler.target>
-    <com.google.guava.version>32.0.1-jre</com.google.guava.version>
-    <com.google.re2j.version>1.7</com.google.re2j.version>
-    <com.google.auto.value.version>1.10.2</com.google.auto.value.version>
-    <google.cloud.bom.version>26.33.0</google.cloud.bom.version>
-    <kafka.version>3.9.1</kafka.version>
-    <kafka.scala.version>2.12</kafka.scala.version>
-    <slf4j.version>2.0.11</slf4j.version>
+  <properties></properties>
 
-    <!-- standard package versions -->
-    <commons.collection.version>4.4</commons.collection.version>
-    <commons.io.version>2.21.0</commons.io.version>
-    <commons.lang3.version>3.17.0</commons.lang3.version>
-    <snappy.version>1.1.10.8</snappy.version>
-    <zstd.version>1.5.7-7</zstd.version>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>Maven</id>
+      <url>https://repo1.maven.org/maven2/</url>
+    </repository>
 
-    <!-- testing versions -->
-    <junit.version>5.10.2</junit.version>
-    <assertj.version>3.26.0</assertj.version>
-    <awaitility.version>4.2.1</awaitility.version>
-    <testcontainers.version>1.20.6</testcontainers.version>
-    <mockito.version>5.21.0</mockito.version>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <url>https://central.sonatype.com/repository/maven</url>
+    </repository>
 
-    <!-- plugin versions -->
-    <rat.version>0.17</rat.version>
-    <assembly.plugin.version>3.7.1</assembly.plugin.version>
-    <checkstyle.plugin.version>3.3.1</checkstyle.plugin.version>
-    <compiler.plugin.version>3.8.1</compiler.plugin.version>
-    <exec.plugin.version>3.2.0</exec.plugin.version>
-    <surefire.plugin.version>3.5.3</surefire.plugin.version>
-
-    <!-- site versions -->
-    <velocity.core.version>2.4.1</velocity.core.version>
-    <velocity.tools.version>3.1</velocity.tools.version>
-  </properties>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <id>central-snapshot</id>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
@@ -250,7 +249,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
-      <version>${commons.collection.version}</version>
+      <version>${commons.collection4.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.http-client</groupId>
@@ -291,34 +290,6 @@
     </dependency>
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>https://central.sonatype.com/repository/maven</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-        <checksumPolicy>fail</checksumPolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-    <repository>
-      <id>central-snapshot</id>
-      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-        <checksumPolicy>fail</checksumPolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <build>
     <resources>
       <resource>
@@ -329,20 +300,8 @@
     </resources>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.3.0</version>
         <executions>
           <execution>
             <goals>
@@ -373,146 +332,6 @@
           </excludes>
           <useManifestOnlyJar>false</useManifestOnlyJar>
           <classesDirectory>${project.build.directory}/${project.build.finalName}.jar</classesDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
-        <version>${rat.version}</version>
-        <executions>
-          <execution>
-            <id>Release Audit Check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <phase>test</phase>
-            <configuration>
-              <inputExcludes>
-                <expression>/CODE_OF_CONDUCT.md</expression>
-                <expression>/CONTRIBUTING.md</expression>
-                <expression>/SECURITY.md</expression>
-              </inputExcludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>PMD check</id>
-            <goals>
-              <goal>check</goal>
-              <goal>cpd-check</goal>
-            </goals>
-            <phase>test</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>Format code</id>
-            <goals>
-              <goal>apply</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>Generate Javadoc</id>
-            <goals>
-              <goal>javadoc</goal>
-            </goals>
-            <phase>compile</phase>
-            <configuration>
-              <failOnWarnings>true</failOnWarnings>
-            </configuration>
-          </execution>
-          <execution>
-            <id>Aggregate Javadoc</id>
-            <goals>
-              <goal>aggregate</goal>
-            </goals>
-            <phase>pre-site</phase>
-          </execution>
-          <execution>
-            <id>attach-docs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <phase>verify</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>dependencies</goal>
-              <goal>dependency-convergence</goal>
-              <goal>distribution-management</goal>
-              <goal>issue-management</goal>
-              <goal>plugin-management</goal>
-              <goal>plugins</goal>
-              <goal>team</goal>
-              <goal>scm</goal>
-              <goal>summary</goal>
-            </goals>
-            <phase>prepare-package</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>3.3.1</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-            <phase>verify</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>3.2.8</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-            <phase>deploy</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.central</groupId>
-        <artifactId>central-publishing-maven-plugin</artifactId>
-        <version>0.9.0</version>
-        <extensions>true</extensions>
-        <configuration>
-          <publishingServerId>central</publishingServerId>
-          <deploymentName>${project.groupId} ${project.artifactId} v${project.version}</deploymentName>
         </configuration>
       </plugin>
     </plugins>
