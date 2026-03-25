@@ -93,6 +93,46 @@
 
   <properties></properties>
 
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>Maven</id>
+      <url>https://repo1.maven.org/maven2/</url>
+    </repository>
+
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <url>https://central.sonatype.com/repository/maven</url>
+    </repository>
+
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <id>central-snapshot</id>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
       <!-- imported poms -->
