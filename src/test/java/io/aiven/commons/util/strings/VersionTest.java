@@ -15,30 +15,32 @@
  */
 package io.aiven.commons.util.strings;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 public class VersionTest {
 
-	@Test
-	void testHandCoded() {
-		Version version = new Version("myHandCoded.properties");
-		assertThat(version.of("loneliestNumber")).isEqualTo("1");
-		assertThat(version.of("asBasAsOne")).isEqualTo("2");
-	}
+  @Test
+  void testHandCoded() {
+    Version version = new Version("myHandCoded.properties");
+    assertThat(version.of("loneliestNumber")).isEqualTo("1");
+    assertThat(version.of("asBasAsOne")).isEqualTo("2");
+  }
 
-	@Test
-	void testGenerated() {
-		Version version = new Version("version.info");
-		assertThat(version.of("project-version")).isNotEqualTo("unknown");
-	}
+  @Test
+  void testGenerated() {
+    Version version = new Version("version.info");
+    assertThat(version.of("project-version")).isNotEqualTo("unknown");
+  }
 
-	@Test
-	void testMissingFile() {
-		final String expected = "Error while loading io/aiven/commons/missing.strings.properties: inStream parameter is null";
-		Version version = new Version("io/aiven/commons/missing.strings.properties");
-		assertThat(version.of("testing.io.aiven.commons-aiven-commons-version-example")).isEqualTo(expected);
-		assertThat(version.of("project-version")).isEqualTo(expected);
-	}
+  @Test
+  void testMissingFile() {
+    final String expected =
+        "Error while loading io/aiven/commons/missing.strings.properties: inStream parameter is null";
+    Version version = new Version("io/aiven/commons/missing.strings.properties");
+    assertThat(version.of("testing.io.aiven.commons-aiven-commons-version-example"))
+        .isEqualTo(expected);
+    assertThat(version.of("project-version")).isEqualTo(expected);
+  }
 }

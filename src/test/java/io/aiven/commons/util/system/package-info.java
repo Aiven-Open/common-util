@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2024 Copyright 2022 Aiven Oy and
  * bigquery-connector-for-apache-kafka project contributors
@@ -22,7 +21,5 @@
  * under the License.
  */
 
-/**
- * Package of classes that interrogate the java system
- */
+/** Package of classes that interrogate the java system */
 package io.aiven.commons.util.system;
