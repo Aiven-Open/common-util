@@ -25,10 +25,16 @@ then
   exit 1
 fi
 
-startTag=${1}
-endTag=${2}
+startTag=v${1}
+endTag=v${2}
 
-start=`git rev-parse v${startTag}`;
+start=`git rev-parse ${startTag}`;
+if [ ${start} == ${startTag} ]
+then
+  echo ${startTag} is not a valid git tag for this repository
+  exit 1
+fi
+
 end=`git rev-parse HEAD`;
 commits=${start}...${end};
 echo '## v'${endTag} > /tmp/proposed_changelog.txt;
@@ -49,8 +55,8 @@ touch CHANGE_LOG.md
 cat /tmp/proposed_changelog.txt CHANGE_LOG.md >> /tmp/CHANGE_LOG.md
 mv /tmp/CHANGE_LOG.md CHANGE_LOG.md
 
-git checkout -b changelog-${endTag}
-
-git add CHANGE_LOG.md
-git commit -m "Changelog for v${startTag} to v${endTag}"
-git push --set-upstream origin changelog-${endTag}
+#git checkout -b changelog-${endTag}
+#
+#git add CHANGE_LOG.md
+#git commit -m "Changelog for v${startTag} to v${endTag}"
+#git push --set-upstream origin changelog-${endTag}
