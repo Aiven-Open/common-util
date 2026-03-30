@@ -1,0 +1,198 @@
+## v2
+### What is changed
+ 
+ - added release_detail.sh
+ - Merge pull request #8 from Aiven-Open/add-extendedIterator
+ - fixed javadoc
+ - Merge pull request #7 from Aiven-Open/apply-format
+ - applied new format
+ - Merge pull request #5 from Aiven-Open/ringbuffer-comparator
+ - Update src/main/java/io/aiven/commons/util/collections/RingBuffer.java
+ - Merge pull request #3 from Aiven-Open/fix-pom
+ - added comparator and contains method override
+ - fixed warking in pom
+ - Merge pull request #1 from Aiven-Open/changes-for-aiven-commons
+ - removed -U from maven build
+ - fixed issues with repositories
+ - Update PR_check.yml
+ - Update Merge_check.yml
+ - changes for aiven commons
+ - Update README.md
+ - Update README.md
+ - Update README.md
+ - Update README.md
+ - updated action/setup-java
+ - fixed typo in artifactid
+ - removed build_site and fixed site deploy
+ - Update PR_check.yml
+ - Update PR_check.yml
+ - fixed jdk version property
+ - added site and site deploy
+ - Update Merge_check.yml
+ - Update Merge_check.yml
+ - merge only publishes on build
+ - Merge_check.uml update
+ - fix repositories
+ - Update Merge_check.yml
+ - Update Merge_check.yml
+ - Update Merge_check.yml
+ - Update Merge_check.yml
+ - fix for build
+ - fixed action name
+ - fixed some github wornings
+ - updated github scripts to handle java version better
+ - Update Merge_check.yml
+ - updated github scripts
+ - Update PR_check.yml
+ - fixes for github actions
+ - fixed build issues
+ - initial fixes to build
+ - initial migration
+ - Merge pull request #41 from Aiven-Open/update-testkit
+ - Merge pull request #40 from Aiven-Open/update-compressionType
+ - added overrides to kafak startup
+ - first checkin
+ - Initial commit
+ - compress/decompress byte[] + tests
+ - Add setting ConfigDefBean with a property file (#38)
+ - Add http result strings (#37)
+ - Add minimum delay to Backoff (#36)
+ - Merge pull request #31 from Aiven-Open/ryanskraba/enum-validator-doc
+ - Merge pull request #35 from Aiven-Open/ryanskraba/module-cleanup
+ - Add missing module-info for build
+ - Refactor for case sensitivity
+ - Add io.aiven.commons.strings.Version to process versions  (#32)
+ - Add CompressionType to IO (#26)
+ - Improve EnumValidator docs and tests
+ - Add EnumValidator fixed UrlValidator (#27)
+ - Update Merge_check.yml
+ - Merge pull request #30 from Aiven-Open/fix-build-issue
+ - added sign profile
+ - Merge pull request #29 from Aiven-Open/Claudenw-patch-4
+ - Update publish.yml
+ - Merge pull request #28 from Aiven-Open/update-system-version
+ - updates system version
+ - Merge pull request #25 from Aiven-Open/create_documentation
+ - Updated as per review
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - fixed documentation landing page
+ - Added CommonConfigDef documentation to site navigation
+ - added package info for kafka config docs
+ - Merge remote-tracking branch 'origin/create_documentation' into create_documentation
+ - fixed README issue
+ - removed velocity module as it was mergeed into kafka-config
+ - Added CommonConfigDef documentation
+ - Update kafka-config/src/site/markdown/ConfigFragmentUsage.md
+ - Update kafka-config/src/site/markdown/CommonConfigUsage.md
+ - cleanedd up code
+ - updated tests
+ - documentation changes
+ - Merge pull request #24 from Aiven-Open/google-utils_1.2.0-SNAPSHOT
+ - changed google-utils version to 1.2.0-SNAPSHOT
+ - Merge pull request #23 from Aiven-Open/google-utils_v1.1.0
+ - updated version
+ - updated release notes
+ - set google-utils to v1.1.0
+ - Merge pull request #22 from Aiven-Open/release_system_1.1.0
+ - updates as per review
+ - release system 1.1.0
+ - Merge pull request #20 from Aiven-Open/switch_GCPValidator_to_system_properties
+ - changes as per review
+ - Merge pull request #21 from Aiven-Open/add_setVersionOnly_to_SinceInfo
+ - fixed SystemCheck and GPCValidatorTest
+ - Switched GPCValidator to use System.properties
+ - Added setVersionOnly
+ - Merge pull request #19 from Aiven-Open/add_SinceInfoMapBuilder
+ - added missing license
+ - added SinceInfoMapBuilder and tests
+ - Merge pull request #18 from Aiven-Open/fix_build_issue
+ - disabled javadoc for kafka-testkit
+ - added strings module-info
+ - Merge pull request #17 from Aiven-Open/add-SinceInfo-to-kafka-config
+ - fixed javadoc
+ - fixed cased string issues
+ - fixed javadoc errors
+ - fixed typo
+ - Fixed tests and javadocs
+ - added SinceInfo
+ - updated profiles
+ - updated CasedString
+ - added badges
+ - Adjusted workflows
+ - Update Merge_check.yml
+ - Update Merge_check.yml
+ - Update Merge_check.yml
+ - updated checks
+ - Update publish.yml
+ - Update publish.yml
+ - Update publish.yml
+ - Update publish.yml
+ - another attempt
+ - trying with sonotype id
+ - change to 'central' server name
+ - testing with my ID
+ - synchronized repository name
+ - Merge pull request #16 from Aiven-Open/Claudenw-patch-2
+ - Update publish.yml
+ - Merge pull request #15 from Aiven-Open/Claudenw-patch-1
+ - Update publish.yml
+ - Merge pull request #14 from Aiven-Open/Add-deployment
+ - fixed copyright notices
+ - added publish workflow and supporting maven profiles
+ - Merge pull request #13 from Aiven-Open/update_snapshot_versions
+ - Update commons, google-utils, and system to SNAPSHOT versions
+ - Merge pull request #12 from Aiven-Open/cleanup_release
+ - fixed build warnings
+ - Changes to meet publishing requirements
+ - Release google-utils 1.0.0 and associated components.
+ - changed version numbers for google-utils release
+ - Merge pull request #9 from Aiven-Open/create-suite-build
+ - updated as per  review
+ - fixed formatting
+ - fixed kafka-testkit build
+ - fixed dependency issue
+ - fixed dependency issue
+ - fixed legacy repository issue
+ - fixed repository issue
+ - added PR and commits build
+ - added missing gitignore
+ - added build-all profile to build all modules
+ - Merge pull request #6 from Aiven-Open/add-google-utils
+ - added missing file
+ - Cleaned up kafka-testkit
+ - added google-utils and supporting changes
+ - Merge pull request #5 from Aiven-Open/add_timing_module
+ - updated as per review
+ - added timing module
+ - Merge pull request #4 from Aiven-Open/update-kafka-config-module
+ - Apply suggestions from code review
+ - Apply suggestion from @aindriu-aiven
+ - Apply suggestion from @aindriu-aiven
+ - added fragments and validators and tests
+ - Merge pull request #3 from Aiven-Open/fix_scale_issues
+ - Merge pull request #7 from Aiven-Open/main
+ - Merge pull request #2 from Aiven-Open/Master+pom_2-SNAPSHOT_version
+ - cleaned  up code and added comments
+ - fixed issues with scale
+ - updated master pom version to 2-SNAPSHOT
+ 
+ 
+### Co-authored by
+ 
+ - Aindriú Lavelle
+ - Claude Warren
+ - Ryan Skraba
+ 
+ 
+### Full Changelog
+https://github.com/Aiven-Open/aiven-commons/compare/commons-1...2
+ 
