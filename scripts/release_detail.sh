@@ -21,15 +21,16 @@
 git fetch origin
 if [ -z $2 ]
 then
-  echo "Must provide source and final version"
+  echo "Must provide source and final version tags"
   exit 1
 fi
 
 startTag=${1}
 endTag=${2}
 
-start=`git rev-parse v${startTag}`;
+start=`git rev-parse ${startTag}`;
 end=`git rev-parse HEAD`;
+git tag -a ${endTag}
 commits=${start}...${end};
 echo '## v'${endTag} > /tmp/proposed_changelog.txt;
 echo '### What is changed' >> /tmp/proposed_changelog.txt;
