@@ -55,8 +55,8 @@ touch CHANGE_LOG.md
 cat /tmp/proposed_changelog.txt CHANGE_LOG.md >> /tmp/CHANGE_LOG.md
 mv /tmp/CHANGE_LOG.md CHANGE_LOG.md
 
-#git checkout -b changelog-${endTag}
-#
-#git add CHANGE_LOG.md
-#git commit -m "Changelog for v${startTag} to v${endTag}"
-#git push --set-upstream origin changelog-${endTag}
+git checkout -b changelog-${endTag}
+
+git add CHANGE_LOG.md
+git commit -m "Changelog for v${startTag} to v${endTag}"
+git push --set-upstream origin changelog-${endTag}

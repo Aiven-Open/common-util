@@ -16,7 +16,7 @@
 
     SPDX-License-Identifier: Apache-2
 -->
-Aiven Commons
+Aiven Common Java Utilities
 ======================
 
 [![Main push checks](https://github.com/Aiven-Open/common-util/actions/workflows/Merge_check.yml/badge.svg)](https://github.com/Aiven-Open/common-util/actions/workflows/Merge_check.yml)
