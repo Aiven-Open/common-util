@@ -92,7 +92,7 @@
   </distributionManagement>
 
   <properties>
-      <latestRelease>0.1.0</latestRelease>
+    <latestRelease>0.1.0</latestRelease>
   </properties>
 
   <dependencyManagement>
