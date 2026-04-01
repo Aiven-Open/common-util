@@ -55,7 +55,7 @@ jobs:
             echo "Invalid 'latestRelease' in pom. ${release_version} != ${version}"
             exit 1
           fi
-          export commit_title=$(git log --pretty=format:%s -1 ${release_version})
+          export commit_title=$(git log --pretty=format:%s -1)
           echo "Commit title: $commit_title"
           if [[ ${commit_title} == "Release version ${release_version}" ]]; then
             echo "release_hash=$(git rev-list -n 1 v${release_version})" >> $GITHUB_OUTPUT
