@@ -91,7 +91,9 @@
     </site>
   </distributionManagement>
 
-  <properties/>
+  <properties>
+      <latestRelease></latestRelease>
+  </properties>
 
   <dependencyManagement>
     <dependencies>
