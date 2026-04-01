@@ -50,7 +50,7 @@ jobs:
           if [[ "${release_version}" == "${version}" ]]
           then
             echo "Creating draft release for ${release_version}"
-            echo "release_version=${release_version} >> $GITHUB_OUTPUT;
+            echo "release_version=${release_version}" >> $GITHUB_OUTPUT;
           else
             echo "Invalid "latestRelease" in pom. ${release_version} != ${version}
             exit 1
