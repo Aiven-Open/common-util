@@ -470,6 +470,7 @@
       </build>
     </profile>
     <profile>
+      <!-- used to verify that there are no SNAPSHOT dependencies -->
       <id>pre-release-check</id>
       <build>
         <plugins>
