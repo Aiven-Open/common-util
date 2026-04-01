@@ -21,6 +21,10 @@ name: Create release
 
 on:
   workflow_dispatch:
+  inputs:
+    commit_hash:
+      description: "Hash of 'Release version x.y.z' commit"
+      required: true
 
 permissions:
   contents: write
@@ -32,24 +36,24 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-
-      - name: Checkout main
+      - name: Checkout code
         uses: actions/checkout@v6
         with:
-          ref: main
-          fetch-depth: 0
-
+          ref: ${{ github.event.inputs.commit_hash }}
+          
       - name: Extract version info
         run: |
-          echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
+          export version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec);
+          echo "version=${version}" >> $GITHUB_OUTPUT;
           echo "java_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${jdk.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
           export release_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${latestRelease}' --non-recursive exec:exec);
-          if [[ ${release_version} == "" ]]
+          if [[ ${release_version} == "${version}" ]]
           then
+            echo "Creating draft release for ${release_version}"
+            echo "release_version=${release_version} >> $GITHUB_OUTPUT;
+          else
             echo "Invalid "latestRelease" in pom
             exit 1
-          else
-            echo "release_version=${release_version} >> $GITHUB_OUTPUT;
           fi
           export commit_title=$(git log --pretty=format:%s -1 ${release_version})
           echo "Commit title: $commit_title"
@@ -60,8 +64,6 @@ jobs:
             exit 1
           fi
 
-          git checkout v${release_version}
-          echo "Processing release ${release_version}
           if [[ `grep -c "^## " CHANGE_LOG.md` -gt 1 ]]
           then
             grep -B 999 -m2 "^## " CHANGE_LOG.md | head -n -1 > /tmp/release_body.txt
@@ -70,6 +72,12 @@ jobs:
           fi
         id: project
 
+      - name: Create tag
+        run: |
+          git config --local user.name "GitHub Action"
+          git config --local user.email "action@github.com"
+          git tag -a "v${{ steps.project.outputs.version }}" -m "Release version ${{ steps.project.outputs.version }}"
+          git push origin "v${{ steps.project.outputs.version }}"
 
       - name: Set up JDK ${{ steps.project.outputs.java_version }}
         uses: actions/setup-java@v5
