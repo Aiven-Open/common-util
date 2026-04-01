@@ -21,10 +21,6 @@ name: Create release
 
 on:
   workflow_dispatch:
-    inputs:
-      commit_hash:
-        description: "Hash of 'Release version x.y.z' commit"
-        required: true
 
 permissions:
   contents: write
@@ -36,21 +32,44 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.inputs.commit_hash }}
 
-      - name: Check commit title and extract version
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Extract version info
         run: |
-          export commit_title=$(git log --pretty=format:%s -1 ${{ github.event.inputs.commit_hash }})
+          echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
+          echo "java_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${jdk.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT;
+          export release_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${latestRelease}' --non-recursive exec:exec);
+          if [[ ${release_version} == "" ]]
+          then
+            echo "Invalid "latestRelease" in pom
+            exit 1
+          else
+            echo "release_version=${release_version} >> $GITHUB_OUTPUT;
+          fi
+          export commit_title=$(git log --pretty=format:%s -1 ${release_version})
           echo "Commit title: $commit_title"
-          if [[ ${commit_title} == "Release version ${{ steps.project.outputs.version }}" ]]; then
-            echo "Valid commit title"
+          if [[ ${commit_title} == "Release version ${release_version}" ]]; then
+            echo "release_hash=$(git rev-list -n 1 v${release_version}) >> $GITHUB_OUTPUT
           else
             echo "Invalid commit title: "${commit_title}
             exit 1
           fi
+
+          git checkout v${release_version}
+          echo "Processing release ${release_version}
+          if [[ `grep -c "^## " CHANGE_LOG.md` -gt 1 ]]
+          then
+            grep -B 999 -m2 "^## " CHANGE_LOG.md | head -n -1 > /tmp/release_body.txt
+          else
+            cp CHANGE_LOG.md /tmp/release_body.txt
+          fi
+        id: project
+
 
       - name: Set up JDK ${{ steps.project.outputs.java_version }}
         uses: actions/setup-java@v5
@@ -58,13 +77,6 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ steps.project.outputs.java_version }}
           cache: 'maven'
-
-      - name: Create tag
-        run: |
-          git config --local user.name "GitHub Action"
-          git config --local user.email "action@github.com"
-          git tag -a "v${{ steps.project.outputs.version }}" -m "Release version ${{ steps.project.outputs.version }}"
-          git push origin "v${{ steps.project.outputs.version }}"
 
       - name: Setup Maven settings.xml
         uses: s4u/maven-settings-action@v4.0.0
@@ -77,7 +89,7 @@ jobs:
               "password": "${{ secrets.SONATYPE_PASSWORD }}"
             }]
 
-      - name: Publish ${{ steps.project.outputs.version }}
+      - name: Publish ${{ steps.project.outputs.release_version }}
         run: mvn -P sign -P publish -e -B -V -ntp -Dgpg.signer=bc deploy
         env:
           MAVEN_GPG_KEY: ${{ secrets.GPG_KEY }}
@@ -89,9 +101,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v${{ steps.project.outputs.version }}"
-          target_commitish: ${{ github.event.inputs.commit_hash }}
+          tag_name: "v${{ steps.project.outputs.release_version }}"
+          target_commitish: ${{steps.project.outputs.release_hash }}
           draft: true
           prerelease: false
           files: target/*.jar
+          body_path: /tmp/release_body.txt
 
