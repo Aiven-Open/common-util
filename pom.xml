@@ -26,7 +26,7 @@
   </parent>
   <groupId>io.aiven.commons</groupId>
   <artifactId>common-util</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Aiven Common Java Utilities</name>
@@ -92,7 +92,7 @@
   </distributionManagement>
 
   <properties>
-      <latestRelease></latestRelease>
+      <latestRelease>0.1.0</latestRelease>
   </properties>
 
   <dependencyManagement>
