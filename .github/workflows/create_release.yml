@@ -21,10 +21,10 @@ name: Create release
 
 on:
   workflow_dispatch:
-  inputs:
-    commit_hash:
-      description: "Hash of 'Release version x.y.z' commit"
-      required: true
+    inputs:
+      commit_hash:
+        description: "Hash of 'Release version x.y.z' commit"
+        required: true
 
 permissions:
   contents: write
