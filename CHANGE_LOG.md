@@ -1,3 +1,22 @@
+## v0.2.0
+### What is changed
+ 
+ - Bump aiven-common from 3 to 4 (#17)
+ - Bump org.apache.commons:commons-text from 1.14.0 to 1.15.0 (#14)
+ - Bump org.sonatype.central:central-publishing-maven-plugin (#15)
+ - Create dependabot.yml
+ 
+ 
+### Co-authored by
+ 
+ - Aindriú Lavelle
+ - Claude Warren
+ - Ryan Skraba
+ 
+ 
+### Full Changelog
+https://github.com/Aiven-Open/common-util/compare/v0.1.0...v0.2.0
+ 
 ## v0.1.0
 ### What is changed
  
