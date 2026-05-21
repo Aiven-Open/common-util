@@ -58,5 +58,5 @@ mv /tmp/CHANGE_LOG.md CHANGE_LOG.md
 git checkout -b changelog-${endTag}
 
 git add CHANGE_LOG.md
-git commit -m "Changelog for ${startTag} to ${endTag}"
+git commit -m "Update CHANGE_LOG.md for ${startTag} to ${endTag}"
 git push --set-upstream origin changelog-${endTag}
