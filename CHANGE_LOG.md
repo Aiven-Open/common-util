@@ -1,30 +1,16 @@
-## vv0.2.0
+## v0.2.0
 ### What is changed
  
  - Bump aiven-common from 3 to 4 (#17)
  - Bump org.apache.commons:commons-text from 1.14.0 to 1.15.0 (#14)
  - Bump org.sonatype.central:central-publishing-maven-plugin (#15)
  - Create dependabot.yml
- - Merge pull request #13 from Aiven-Open/ryanskraba/spotless
- - Apply spotless
- - Update create_release.yml
- - Update create_release.yml
- - Update create_release.yml
- - Update create_release.yml
- - Update create_release.yml
- - Update create_release.yml
- - Update create_release.yml
- - Update create_release.yml
- - Merge pull request #12 from Aiven-Open/release-0.1.0
- - Bump version to 0.2.0-SNAPSHOT
  
  
 ### Co-authored by
  
  - Aindriú Lavelle
  - Claude Warren
- - dependabot[bot]
- - github-actions[bot]
  - Ryan Skraba
  
  
