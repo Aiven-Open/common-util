@@ -52,7 +52,7 @@ echo '### Full Changelog' >> /tmp/proposed_changelog.txt;
 echo 'https://github.com/Aiven-Open/common-util/compare/'${startTag}'...'${endTag}  >> /tmp/proposed_changelog.txt;
 echo ' ' >> /tmp/proposed_changelog.txt
 touch CHANGE_LOG.md
-cat /tmp/proposed_changelog.txt CHANGE_LOG.md >> /tmp/CHANGE_LOG.md
+cat /tmp/proposed_changelog.txt CHANGE_LOG.md > /tmp/CHANGE_LOG.md
 mv /tmp/CHANGE_LOG.md CHANGE_LOG.md
 
 git checkout -b changelog-${endTag}
