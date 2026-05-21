@@ -37,7 +37,7 @@ fi
 
 end=`git rev-parse HEAD`;
 commits=${start}...${end};
-echo '## v'${endTag} > /tmp/proposed_changelog.txt;
+echo '## '${endTag} > /tmp/proposed_changelog.txt;
 echo '### What is changed' >> /tmp/proposed_changelog.txt;
 echo ' ' >> /tmp/proposed_changelog.txt;
 git log --format=' - %s'  ${commits} >> /tmp/proposed_changelog.txt;
@@ -58,5 +58,5 @@ mv /tmp/CHANGE_LOG.md CHANGE_LOG.md
 git checkout -b changelog-${endTag}
 
 git add CHANGE_LOG.md
-git commit -m "Changelog for v${startTag} to v${endTag}"
+git commit -m "Changelog for ${startTag} to ${endTag}"
 git push --set-upstream origin changelog-${endTag}
