@@ -60,3 +60,5 @@ git checkout -b changelog-${endTag}
 git add CHANGE_LOG.md
 git commit -m "Update CHANGE_LOG.md for ${startTag} to ${endTag}"
 git push --set-upstream origin changelog-${endTag}
+
+echo "Run 'mvn -P pre-release-check verify site' and fix any issues before attempting a release."
