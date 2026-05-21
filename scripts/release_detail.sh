@@ -21,7 +21,7 @@
 git fetch origin
 if [ -z $2 ]
 then
-  echo "Must provide source and final version"
+  echo "Must provide source and final version without 'v' prefix"
   exit 1
 fi
 
