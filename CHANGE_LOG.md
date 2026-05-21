@@ -15,7 +15,7 @@
  
  
 ### Full Changelog
-https://github.com/Aiven-Open/aiven-commons/compare/v0.1.0...v0.2.0
+https://github.com/Aiven-Open/common-util/compare/v0.1.0...v0.2.0
  
 ## v0.1.0
 ### What is changed
