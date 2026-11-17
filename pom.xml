@@ -94,7 +94,6 @@
 
   <properties>
     <latestRelease>0.3.0</latestRelease>
-    <commons.lang3.version>3.18.0</commons.lang3.version>
   </properties>
 
   <dependencyManagement>
@@ -146,7 +145,6 @@
     <dependency>
       <groupId>com.github.luben</groupId>
       <artifactId>zstd-jni</artifactId>
-      <version>${zstd.version}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -164,7 +162,6 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>${commons.io.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -175,17 +172,14 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
-      <version>${commons.collection4.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>[3.18.0, 4.0.0)</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-      <version>${commons.text.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.apache.commons</groupId>
@@ -208,7 +202,6 @@
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka_${kafka.scala.version}</artifactId>
-      <version>${kafka.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -220,7 +213,6 @@
     <dependency>
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-engine-core</artifactId>
-      <version>${velocity.core.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.apache.commons</groupId>
@@ -235,7 +227,6 @@
     <dependency>
       <groupId>org.apache.velocity.tools</groupId>
       <artifactId>velocity-tools-generic</artifactId>
-      <version>${velocity.tools.version}</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -274,13 +265,11 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -292,7 +281,6 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -303,7 +291,6 @@
     <dependency>
       <groupId>org.xerial.snappy</groupId>
       <artifactId>snappy-java</artifactId>
-      <version>${snappy.version}</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
