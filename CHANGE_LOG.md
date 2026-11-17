@@ -1,3 +1,22 @@
+## v0.3.0
+### What is changed
+ 
+ - updated to aiven-commons v5
+ - Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.6.2 to 3.6.3 (#22)
+ - Merge pull request #20 from Aiven-Open/release-0.2.0
+ - Bump version to 0.3.0-SNAPSHOT
+ 
+ 
+### Co-authored by
+ 
+ - Claude Warren
+ - dependabot[bot]
+ - github-actions[bot]
+ 
+ 
+### Full Changelog
+https://github.com/Aiven-Open/common-util/compare/v0.2.0...v0.3.0
+ 
 ## v0.2.0
 ### What is changed
  
