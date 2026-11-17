@@ -29,7 +29,7 @@ module io.aiven.commons.util {
   requires com.google.api.client.json.gson;
   requires com.github.luben.zstd_jni;
   requires org.apache.commons.io;
-  requires snappy.java;
+  requires org.xerial.snappy;
   requires org.apache.commons.text;
   requires org.apache.commons.lang3;
   requires org.slf4j;
